@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.1.2"
@@ -9,10 +11,16 @@ version = "0.0.1-SNAPSHOT"
 
 
 object Versions {
+	val junitPlatformLauncherVersion = "1.10.0";
 	val junitVersion       = "5.10.0";
 	val hamcrestVersion    = "2.2";
 	val mockitoVersion     = "5.4.0";
 }
+
+// HINT: Force override of Spring Dependency management - Avoid NoSuchMethodError conflicts
+// SEE ALSO: https://stackoverflow.com/questions/47453558/override-spring-boot-dependency-version-with-gradle-kotlin-dsl
+// SEE ALSO: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
+extra["junit-jupiter.version"] = Versions.junitVersion
 
 
 java {
@@ -46,8 +54,22 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter-params:${Versions.junitVersion}")
 	testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
 	testImplementation("org.mockito:mockito-junit-jupiter:${Versions.mockitoVersion}")
+
+// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
+	testImplementation("org.junit.platform:junit-platform-launcher:${Versions.junitPlatformLauncherVersion}")
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+
+	testLogging {
+		events = hashSetOf(
+				TestLogEvent.FAILED,
+				TestLogEvent.PASSED,
+				TestLogEvent.SKIPPED,
+				TestLogEvent.STANDARD_OUT,
+				TestLogEvent.STANDARD_ERROR
+		)
+		showStandardStreams = true
+	}
 }
