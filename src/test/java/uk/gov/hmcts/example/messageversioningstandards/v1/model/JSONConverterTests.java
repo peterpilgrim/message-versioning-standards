@@ -1,12 +1,10 @@
-package uk.gov.hmcts.example.messageversioningstandards;
+package uk.gov.hmcts.example.messageversioningstandards.v1.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.example.messageversioningstandards.v1.model.Attributes;
-import uk.gov.hmcts.example.messageversioningstandards.v1.model.Product;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -18,10 +16,10 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class JSONConverterTests {
 
-    @DisplayName("should convert Product v1 to JSON")
+    @DisplayName("should convert Product V1 to JSON")
     @Test
     public void convertProductV1toJson() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        var objectMapper = new ObjectMapper();
 
         var product = Product.builder().media("Book")
                 .name("Consider Phlebas").author("Iain M Banks").genre("Science Fiction")
@@ -38,7 +36,7 @@ public class JSONConverterTests {
         objectMapper.writeValue(swriter, product);
         var jsonDataSourceString = swriter.toString();
 
-        System.out.printf("jsonDataSourceString=%s\n",jsonDataSourceString);
+//        System.out.printf("jsonDataSourceString=%s\n",jsonDataSourceString);
 
         DocumentContext jsonContext = JsonPath.parse(jsonDataSourceString);
 
@@ -51,4 +49,34 @@ public class JSONConverterTests {
         assertThat( jsonContext.read("$.personas.['Perosteck Balveda'].attributes[0]"), is("Operative"));
         assertThat( jsonContext.read("$.personas.['Perosteck Balveda'].attributes[1]"), is("The Culture"));
     }
+
+    @DisplayName("should convert JSON to Product V1")
+    @Test
+    public void convertJsonToProductV1() throws IOException {
+        var objectMapper = new ObjectMapper();
+        var json = """
+                { 
+                    "media":"Book","name":"The Player of Games","author":"Iain M Banks","genre":"Science Fiction",
+                    "personas":{
+                        "Jernau Morat Gurgeh":{"attributes":["Board Game Player","Chiark Orbital Citizen"]},
+                        "Mawhrin-Skel":{"attributes":["Drone","Special Circumstance", "The Culture"]}
+                    }
+                }
+                """;
+        var product = objectMapper.readValue( json, Product.class);
+        assertThat( product, is(notNullValue()));
+        assertThat( product.getMedia(), is("Book"));
+        assertThat( product.getAuthor(), is("Iain M Banks"));
+        assertThat( product.getGenre(), is("Science Fiction"));
+        assertThat( product.getName(), is("The Player of Games"));
+        assertThat( product.getPersonas().size(), is(2));
+        assertThat( product.getPersonas(), is(
+                Map.of(
+                "Jernau Morat Gurgeh",
+                Attributes.builder().attributes(Arrays.asList("Board Game Player", "Chiark Orbital Citizen")).build(),
+                "Mawhrin-Skel",
+                Attributes.builder().attributes(Arrays.asList("Drone", "Special Circumstance", "The Culture")).build())
+        ));
+    }
+
 }
