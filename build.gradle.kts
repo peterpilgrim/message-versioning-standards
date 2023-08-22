@@ -11,6 +11,8 @@ version = "0.0.1-SNAPSHOT"
 
 
 object Versions {
+	val jacksonMappingVersion = "2.15.2";
+	val jaywayJsonPathVersion = "2.8.0";
 	val junitPlatformLauncherVersion = "1.10.0";
 	val junitVersion       = "5.10.0";
 	val hamcrestVersion    = "2.2";
@@ -42,6 +44,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-artemis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework:spring-jms")
+	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${Versions.jacksonMappingVersion}")
+	implementation("com.fasterxml.jackson.core:jackson-core:${Versions.jacksonMappingVersion}")
+	implementation("com.jayway.jsonpath:json-path:${Versions.jaywayJsonPathVersion}")
 
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
