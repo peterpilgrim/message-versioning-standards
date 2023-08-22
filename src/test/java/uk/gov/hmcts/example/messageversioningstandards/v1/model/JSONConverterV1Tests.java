@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-public class JSONConverterTests {
+public class JSONConverterV1Tests {
 
     @DisplayName("should convert Product V1 to JSON")
     @Test
@@ -26,9 +26,9 @@ public class JSONConverterTests {
                 .personas(
                         Map.of(
                                 "Horza",
-                                    Attributes.builder().attributes(Arrays.asList("Changer", "Idiran Empire")).build(),
+                                    Attributes.builder().attributes(List.of("Changer", "Idiran Empire")).build(),
                                 "Perosteck Balveda",
-                                    Attributes.builder().attributes(Arrays.asList("Operative", "The Culture")).build())
+                                    Attributes.builder().attributes(List.of("Operative", "The Culture")).build())
                 )
                 .build();
 
@@ -55,7 +55,7 @@ public class JSONConverterTests {
     public void convertJsonToProductV1() throws IOException {
         var objectMapper = new ObjectMapper();
         var json = """
-                { 
+                {
                     "media":"Book","name":"The Player of Games","author":"Iain M Banks","genre":"Science Fiction",
                     "personas":{
                         "Jernau Morat Gurgeh":{"attributes":["Board Game Player","Chiark Orbital Citizen"]},
@@ -73,9 +73,9 @@ public class JSONConverterTests {
         assertThat( product.getPersonas(), is(
                 Map.of(
                 "Jernau Morat Gurgeh",
-                Attributes.builder().attributes(Arrays.asList("Board Game Player", "Chiark Orbital Citizen")).build(),
+                Attributes.builder().attributes(List.of("Board Game Player", "Chiark Orbital Citizen")).build(),
                 "Mawhrin-Skel",
-                Attributes.builder().attributes(Arrays.asList("Drone", "Special Circumstance", "The Culture")).build())
+                Attributes.builder().attributes(List.of("Drone", "Special Circumstance", "The Culture")).build())
         ));
     }
 
