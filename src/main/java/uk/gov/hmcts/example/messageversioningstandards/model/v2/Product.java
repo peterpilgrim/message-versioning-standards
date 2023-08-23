@@ -1,4 +1,4 @@
-package uk.gov.hmcts.example.messageversioningstandards.v2.model;
+package uk.gov.hmcts.example.messageversioningstandards.model.v2;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,20 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
-/*
-{
-	"version": "2.0.0",
-	"media": "Book",
-    "name": "Consider Phlebas",
-	"author": "Iain M Banks",
-	"genre": "Science Fiction",
-	"personas": [
-		{"name": "Horza", "role": "Changer", "allegience": "Idiran Empire"},
-		{"name": "Perosteck Balveda", "role": "Operative", "allegience": "The Culture" }
-	]
-}
- */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

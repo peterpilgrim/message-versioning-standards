@@ -1,10 +1,12 @@
-package uk.gov.hmcts.example.messageversioningstandards.v1.model;
+package uk.gov.hmcts.example.messageversioningstandards.model.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.example.messageversioningstandards.model.v1.Attributes;
+import uk.gov.hmcts.example.messageversioningstandards.model.v1.Product;
 
 import java.io.IOException;
 import java.io.StringWriter;

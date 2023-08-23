@@ -1,4 +1,4 @@
-package uk.gov.hmcts.example.messageversioningstandards.v2.model;
+package uk.gov.hmcts.example.messageversioningstandards.model.v2;
 
 public enum Allegiance {
     CULTURE("The Culture"),
