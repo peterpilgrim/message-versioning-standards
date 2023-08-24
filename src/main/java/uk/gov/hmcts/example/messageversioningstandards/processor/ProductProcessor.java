@@ -2,6 +2,9 @@ package uk.gov.hmcts.example.messageversioningstandards.processor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import jakarta.jms.JMSException;
 import jakarta.jms.TextMessage;
 import org.slf4j.Logger;
@@ -34,6 +37,8 @@ public class ProductProcessor {
 
         var objectMapper = new ObjectMapper();
 
+        logger.info( "Try *PEEK* at the version ({})", peekaboo( message.getText()));
+
         try {
             var productV1 = objectMapper.readValue(message.getText(), uk.gov.hmcts.example.messageversioningstandards.model.v1.Product.class);
             orderItems.add(String.format("V1 media=%s, name=%s, author=%s", productV1.getMedia(), productV1.getName(), productV1.getAuthor()));
@@ -46,7 +51,17 @@ public class ProductProcessor {
                 throw new RuntimeException(ex);
             }
         }
+    }
 
+    private String peekaboo( String jsonText) {
+        DocumentContext documentContext = JsonPath.parse(jsonText);
+        try {
+            Object dataVersion = documentContext.read("$.version");
+            return dataVersion.toString();
+        }
+        catch (PathNotFoundException pathNotFoundException) {
+            return "";
+        }
     }
 
 }
