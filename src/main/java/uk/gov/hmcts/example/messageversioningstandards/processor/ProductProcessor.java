@@ -42,6 +42,7 @@ public class ProductProcessor {
         try {
             var productV1 = objectMapper.readValue(message.getText(), uk.gov.hmcts.example.messageversioningstandards.model.v1.Product.class);
             orderItems.add(String.format("V1 media=%s, name=%s, author=%s", productV1.getMedia(), productV1.getName(), productV1.getAuthor()));
+            System.out.printf("Bootsy Collins orderItems.size=%d\n", orderItems.size());
         } catch (JsonProcessingException e) {
             uk.gov.hmcts.example.messageversioningstandards.model.v2.Product productV2= null;
             try {

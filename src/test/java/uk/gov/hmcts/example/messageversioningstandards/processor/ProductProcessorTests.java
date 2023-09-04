@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest
 public class ProductProcessorTests {
 
-    private static final long SLEEP_TIME=333;
+    private static final long SLEEP_TIME=100;
     @Autowired
     private MessageSender messageSender;
 
@@ -85,13 +85,15 @@ public class ProductProcessorTests {
                 """;
 
         System.out.printf("productProcessor=%X\n", System.identityHashCode(productProcessor));
+        System.out.printf("BEFORE productProcessor.orderItems=%X\n", System.identityHashCode(productProcessor.getOrderItems()));
+        System.out.printf("BEFORE productProcessor.orderItems.size=%d\n", productProcessor.getOrderItems().size());
 
         productProcessor.getOrderItems().clear();
         Thread.sleep(SLEEP_TIME);
         messageSender.sendTextMessage(queueName, json);
         Thread.sleep(SLEEP_TIME);
-        System.out.printf("productProcessor.orderItems=%X\n", System.identityHashCode(productProcessor.getOrderItems()));
-        System.out.printf("productProcessor.orderItems.size=%d\n", productProcessor.getOrderItems().size());
+        System.out.printf("AFTER productProcessor.orderItems=%X\n", System.identityHashCode(productProcessor.getOrderItems()));
+        System.out.printf("AFTER productProcessor.orderItems.size=%d\n", productProcessor.getOrderItems().size());
         assertThat( productProcessor.getOrderItems().size(), is(1));
         assertThat( productProcessor.getOrderItems().get(0), is("V2.3.4" +
                 " media=Book, name=The Player of Games, author=Iain M Banks"));
