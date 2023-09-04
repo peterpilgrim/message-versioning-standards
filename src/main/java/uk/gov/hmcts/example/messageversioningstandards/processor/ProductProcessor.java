@@ -37,7 +37,7 @@ public class ProductProcessor {
 
         var objectMapper = new ObjectMapper();
 
-        logger.info( "Try *PEEK* at the version ({})", peekaboo( message.getText()));
+        logger.info( "++++ Try *PEEK* at the version ({})", peekaboo( message.getText()));
 
         try {
             var productV1 = objectMapper.readValue(message.getText(), uk.gov.hmcts.example.messageversioningstandards.model.v1.Product.class);
@@ -46,7 +46,9 @@ public class ProductProcessor {
             uk.gov.hmcts.example.messageversioningstandards.model.v2.Product productV2= null;
             try {
                 productV2 = objectMapper.readValue(message.getText(), uk.gov.hmcts.example.messageversioningstandards.model.v2.Product.class);
+                System.out.println("Chequered");
                 orderItems.add(String.format("V%s media=%s, name=%s, author=%s", productV2.getVersion(), productV2.getMedia(), productV2.getName(), productV2.getAuthor()));
+                System.out.printf("Flag orderItems.size=%d\n", orderItems.size());
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException(ex);
             }

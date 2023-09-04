@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.*;
 @SpringBootTest
 public class ProductProcessorTests {
 
+    private static final long SLEEP_TIME=333;
     @Autowired
     private MessageSender messageSender;
 
@@ -35,14 +36,19 @@ public class ProductProcessorTests {
                     "media":"Book","name":"The Player of Games","author":"Iain M Banks","genre":"Science Fiction",
                     "personas":{
                         "Jernau Morat Gurgeh":{"attributes":["Board Game Player","Chiark Orbital Citizen"]},
-                        "Mawhrin-Skel":{"attributes":["Drone","Special Circumstance", "The Culture"]}
+                        "Mawhrin-Skel":{"attributes":["Drone","Special Circumstance", "The Culture"]}   
                     }
                 }
                 """;
 
+        System.out.printf("productProcessor=%X\n", System.identityHashCode(productProcessor));
+
         productProcessor.getOrderItems().clear();
+        Thread.sleep(SLEEP_TIME);
         messageSender.sendTextMessage(queueName, json);
-        Thread.sleep(500);
+        Thread.sleep(SLEEP_TIME);
+        System.out.printf("productProcessor.orderItems=%X\n", System.identityHashCode(productProcessor.getOrderItems()));
+        System.out.printf("productProcessor.orderItems.size=%d\n", productProcessor.getOrderItems().size());
         assertThat( productProcessor.getOrderItems().size(), is(1));
         assertThat( productProcessor.getOrderItems().get(0), is("V1 media=Book, name=The Player of Games, author=Iain M Banks"));
     }
@@ -77,9 +83,15 @@ public class ProductProcessorTests {
                      ]
                }
                 """;
+
+        System.out.printf("productProcessor=%X\n", System.identityHashCode(productProcessor));
+
         productProcessor.getOrderItems().clear();
+        Thread.sleep(SLEEP_TIME);
         messageSender.sendTextMessage(queueName, json);
-        Thread.sleep(500);
+        Thread.sleep(SLEEP_TIME);
+        System.out.printf("productProcessor.orderItems=%X\n", System.identityHashCode(productProcessor.getOrderItems()));
+        System.out.printf("productProcessor.orderItems.size=%d\n", productProcessor.getOrderItems().size());
         assertThat( productProcessor.getOrderItems().size(), is(1));
         assertThat( productProcessor.getOrderItems().get(0), is("V2.3.4" +
                 " media=Book, name=The Player of Games, author=Iain M Banks"));
