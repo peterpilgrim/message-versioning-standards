@@ -5,9 +5,6 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.example.messageversioningstandards.model.v2.Allegiance;
-import uk.gov.hmcts.example.messageversioningstandards.model.v2.Persona;
-import uk.gov.hmcts.example.messageversioningstandards.model.v2.Product;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -24,7 +21,7 @@ public class JSONConverterV2Tests {
     public void convertProductV1toJson() throws IOException {
         var objectMapper = new ObjectMapper();
 
-        var product = Product.builder().media("Book")
+        var product = ProductV2.builder().media("Book")
                 .version("2.0.0")
                 .name("Consider Phlebas").author("Iain M Banks").genre("Science Fiction")
                 .personas(
@@ -92,7 +89,7 @@ public class JSONConverterV2Tests {
                      ]
                }
                 """;
-        var product = objectMapper.readValue( json, Product.class);
+        var product = objectMapper.readValue( json, ProductV2.class);
         assertThat( product, is(notNullValue()));
         assertThat( product.getVersion(), is("2.0.1"));
         assertThat( product.getMedia(), is("Book"));

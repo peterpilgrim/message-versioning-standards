@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class Product {
+public class ProductV2 {
     private String version;
     private String media;
     private String name;

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.example.messageversioningstandards.model.v1.Product;
+import uk.gov.hmcts.example.messageversioningstandards.model.v2.ProductV2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +41,13 @@ public class ProductProcessor {
         logger.info( "++++ Try *PEEK* at the version ({})", peekaboo( message.getText()));
 
         try {
-            var productV1 = objectMapper.readValue(message.getText(), uk.gov.hmcts.example.messageversioningstandards.model.v1.Product.class);
+            var productV1 = objectMapper.readValue(message.getText(), Product.class);
             orderItems.add(String.format("V1 media=%s, name=%s, author=%s", productV1.getMedia(), productV1.getName(), productV1.getAuthor()));
             System.out.printf("Bootsy Collins orderItems.size=%d\n", orderItems.size());
         } catch (JsonProcessingException e) {
-            uk.gov.hmcts.example.messageversioningstandards.model.v2.Product productV2= null;
+            ProductV2 productV2= null;
             try {
-                productV2 = objectMapper.readValue(message.getText(), uk.gov.hmcts.example.messageversioningstandards.model.v2.Product.class);
+                productV2 = objectMapper.readValue(message.getText(), ProductV2.class);
                 System.out.println("Chequered");
                 orderItems.add(String.format("V%s media=%s, name=%s, author=%s", productV2.getVersion(), productV2.getMedia(), productV2.getName(), productV2.getAuthor()));
                 System.out.printf("Flag orderItems.size=%d\n", orderItems.size());

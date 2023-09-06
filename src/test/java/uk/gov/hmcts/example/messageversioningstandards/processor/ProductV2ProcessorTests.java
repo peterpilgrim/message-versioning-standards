@@ -3,6 +3,7 @@ package uk.gov.hmcts.example.messageversioningstandards.processor;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -13,11 +14,15 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.jms.core.JmsTemplate;
 import uk.gov.hmcts.example.messageversioningstandards.MessageSender;
 
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQQueue;
+
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
-public class ProductProcessorTests {
+public class ProductV2ProcessorTests {
 
     private static final long SLEEP_TIME=100;
     @Autowired
@@ -25,6 +30,32 @@ public class ProductProcessorTests {
 
     @Autowired
     private ProductProcessor productProcessor;
+
+    @BeforeEach
+    public void cleanup() {
+        clearQueue("tcp://localhost:61616",  "queue-1");
+        clearQueue("tcp://localhost:61616",  "processor-queue-1");
+    }
+
+    public void clearQueue( String connection, String queueName)
+    {
+        ActiveMQConnection conn = null;
+
+        try {
+            conn = (ActiveMQConnection) new    ActiveMQConnectionFactory(connection).createConnection();
+            conn.destroyDestination(new ActiveMQQueue(queueName));
+        } catch (JMSException e) {
+            System.err.println("**Error** connecting to the browser please check the URL" + e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (JMSException e) {
+                    System.err.println("**Error** closing connection" + e);
+                }
+            }
+        }
+    }
 
     @DisplayName("process product V1 message to Line Item")
     @Test
