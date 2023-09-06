@@ -62,6 +62,13 @@ dependencies {
 
 // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
 	testImplementation("org.junit.platform:junit-platform-launcher:${Versions.junitPlatformLauncherVersion}")
+
+// https://mvnrepository.com/artifact/org.apache.activemq/activemq-broker
+	testImplementation("org.apache.activemq:activemq-broker:5.18.2")
+
+// https://mvnrepository.com/artifact/org.apache.activemq.tooling/activemq-junit
+	testImplementation("org.apache.activemq.tooling:activemq-junit:5.18.2")
+
 }
 
 tasks.withType<Test> {

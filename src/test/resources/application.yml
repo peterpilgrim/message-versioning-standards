@@ -1,0 +1,4 @@
+spring:
+  name: test-YAML
+  brokerService:
+    connectionURL:  tcp://localhost:61616
