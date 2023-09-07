@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 
 
 @SpringBootTest
-//@Import(JmsTestContextConfiguration.class)
+@Import(JmsTestContextConfiguration.class)
 @ExtendWith(CustomEmbeddedActiveMQBrokerExtension.class)
 class MessageVersioningStandardsApplicationTest {
 

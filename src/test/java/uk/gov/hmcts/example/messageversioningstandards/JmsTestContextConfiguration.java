@@ -18,29 +18,18 @@ import javax.annotation.PostConstruct;
 @EnableJms
 public class JmsTestContextConfiguration {
 
-    @Value("spring.brokerService.connectionUrl")
-    private String connectionUrl = "tcp://localhost:61777";
+//    @Value("${spring.brokerService.connectionUrl}")
+    private String connectionUrl = "vm://embedded-broker:61616";
 
     @PostConstruct
     public void startup() {
         System.out.println("are we dancer?");
-
     }
 
+    @Primary
     @Bean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory() {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
-        return factory;
-    }
-
-    @Bean
-    public ConnectionFactory connectionFactory() {
+    public ConnectionFactory retrieveCnnectionFactory() {
         return new ActiveMQConnectionFactory(connectionUrl);
     }
 
-    @Bean
-    public JmsTemplate jmsTemplate() {
-        return new JmsTemplate(connectionFactory());
-    }
 }
