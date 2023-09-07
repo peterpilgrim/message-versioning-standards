@@ -60,17 +60,20 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
 	testImplementation("org.mockito:mockito-junit-jupiter:${Versions.mockitoVersion}")
 
-// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
+	// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
 	testImplementation("org.junit.platform:junit-platform-launcher:${Versions.junitPlatformLauncherVersion}")
 
-// https://mvnrepository.com/artifact/org.apache.activemq/activemq-broker
+	// https://mvnrepository.com/artifact/org.apache.activemq/activemq-broker
 	testImplementation("org.apache.activemq:activemq-broker:5.18.2")
 
-// https://mvnrepository.com/artifact/org.apache.activemq.tooling/activemq-junit
+	// https://mvnrepository.com/artifact/org.apache.activemq.tooling/activemq-junit
 	testImplementation("org.apache.activemq.tooling:activemq-junit:5.18.2")
 
 	// https://mvnrepository.com/artifact/org.apache.activemq/activemq-pool
 	testImplementation("org.apache.activemq:activemq-pool:5.18.2")
+
+	// https://mvnrepository.com/artifact/org.apache.activemq/activemq-kahadb-store
+	testImplementation("org.apache.activemq:activemq-kahadb-store:5.18.2")
 
 	// https://mvnrepository.com/artifact/javax.jms/javax.jms-api
 	testImplementation("javax.jms:javax.jms-api:2.0.1")

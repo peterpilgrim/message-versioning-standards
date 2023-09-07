@@ -22,7 +22,9 @@ public class JmsConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+        var brokerURL = "tcp://localhost:61616";
+        brokerURL = "vm://embedded-broker:61616";
+        return new ActiveMQConnectionFactory(brokerURL);
     }
 
     @Bean
