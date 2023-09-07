@@ -3,6 +3,7 @@ package uk.gov.hmcts.example.messageversioningstandards;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
+import org.apache.activemq.junit.CustomEmbeddedActiveMQBrokerExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

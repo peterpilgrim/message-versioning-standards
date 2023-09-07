@@ -69,6 +69,12 @@ dependencies {
 // https://mvnrepository.com/artifact/org.apache.activemq.tooling/activemq-junit
 	testImplementation("org.apache.activemq.tooling:activemq-junit:5.18.2")
 
+	// https://mvnrepository.com/artifact/org.apache.activemq/activemq-pool
+	testImplementation("org.apache.activemq:activemq-pool:5.18.2")
+
+	// https://mvnrepository.com/artifact/javax.jms/javax.jms-api
+	testImplementation("javax.jms:javax.jms-api:2.0.1")
+
 }
 
 tasks.withType<Test> {

@@ -19,13 +19,14 @@ import javax.annotation.PostConstruct;
 public class JmsTestContextConfiguration {
 
     @Value("spring.brokerService.connectionUrl")
-    private String connectionUrl;
+    private String connectionUrl = "tcp://localhost:61777";
 
     @PostConstruct
     public void startup() {
         System.out.println("are we dancer?");
 
     }
+
     @Bean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
