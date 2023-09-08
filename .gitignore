@@ -34,3 +34,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### ActiveMQ embedded broker files
+/activemq/
+/activemq-data/
