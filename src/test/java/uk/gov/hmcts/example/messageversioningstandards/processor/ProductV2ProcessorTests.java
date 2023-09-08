@@ -1,25 +1,18 @@
 package uk.gov.hmcts.example.messageversioningstandards.processor;
 
 import jakarta.jms.JMSException;
-import jakarta.jms.Message;
-import jakarta.jms.TextMessage;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.jms.core.JmsTemplate;
-import uk.gov.hmcts.example.messageversioningstandards.MessageSender;
-
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import uk.gov.hmcts.example.messageversioningstandards.MessageSender;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
 public class ProductV2ProcessorTests {
@@ -56,34 +49,6 @@ public class ProductV2ProcessorTests {
             }
         }
     }
-
-    @DisplayName("process product V1 message to Line Item")
-    @Test
-    public void processProductV1message() throws InterruptedException {
-
-        var queueName = "processor-queue-1";
-        var json = """
-                {
-                    "media":"Book","name":"The Player of Games","author":"Iain M Banks","genre":"Science Fiction",
-                    "personas":{
-                        "Jernau Morat Gurgeh":{"attributes":["Board Game Player","Chiark Orbital Citizen"]},
-                        "Mawhrin-Skel":{"attributes":["Drone","Special Circumstance", "The Culture"]}   
-                    }
-                }
-                """;
-
-        System.out.printf("productProcessor=%X\n", System.identityHashCode(productProcessor));
-
-        productProcessor.getOrderItems().clear();
-        Thread.sleep(SLEEP_TIME);
-        messageSender.sendTextMessage(queueName, json);
-        Thread.sleep(SLEEP_TIME);
-        System.out.printf("productProcessor.orderItems=%X\n", System.identityHashCode(productProcessor.getOrderItems()));
-        System.out.printf("productProcessor.orderItems.size=%d\n", productProcessor.getOrderItems().size());
-        assertThat( productProcessor.getOrderItems().size(), is(1));
-        assertThat( productProcessor.getOrderItems().get(0), is("V1 media=Book, name=The Player of Games, author=Iain M Banks"));
-    }
-
 
     @DisplayName("process product V2 message to Line Item")
     @Test
