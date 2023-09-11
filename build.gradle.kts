@@ -60,8 +60,12 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
 	testImplementation("org.mockito:mockito-junit-jupiter:${Versions.mockitoVersion}")
 
-// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
-	testImplementation("org.junit.platform:junit-platform-launcher:${Versions.junitPlatformLauncherVersion}")
+	// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
+
+//	implementation platform('org.testcontainers:testcontainers-bom:1.19.0')
+
+	// SEE ALSO: https://java.testcontainers.org/
+	testImplementation( "org.testcontainers:testcontainers:1.19.0" )
 }
 
 tasks.withType<Test> {
