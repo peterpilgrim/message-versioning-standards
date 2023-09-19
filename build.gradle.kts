@@ -17,6 +17,10 @@ object Versions {
 	val junitVersion       = "5.10.0";
 	val hamcrestVersion    = "2.2";
 	val mockitoVersion     = "5.4.0";
+
+	val testContainerVersion   = "1.19.0"
+	val activeMQClientVersion  = "5.18.2"
+
 }
 
 // HINT: Force override of Spring Dependency management - Avoid NoSuchMethodError conflicts
@@ -65,7 +69,9 @@ dependencies {
 //	implementation platform('org.testcontainers:testcontainers-bom:1.19.0')
 
 	// SEE ALSO: https://java.testcontainers.org/
-	testImplementation( "org.testcontainers:testcontainers:1.19.0" )
+	testImplementation( "org.testcontainers:testcontainers:${Versions.testContainerVersion}" )
+	testImplementation( "org.testcontainers:junit-jupiter:${Versions.testContainerVersion}" )
+	testImplementation( "org.apache.activemq:activemq-client:${Versions.activeMQClientVersion}")
 }
 
 tasks.withType<Test> {

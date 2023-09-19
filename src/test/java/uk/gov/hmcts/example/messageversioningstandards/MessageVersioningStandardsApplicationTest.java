@@ -3,6 +3,7 @@ package uk.gov.hmcts.example.messageversioningstandards;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -14,10 +15,23 @@ import org.springframework.jms.core.JmsTemplate;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
+import jakarta.jms.*;
+
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 class MessageVersioningStandardsApplicationTest {
+
+	final static int MQ_PORT = 61616;
+	@Container
+	public GenericContainer<?> activeMQContainer = new GenericContainer<>(DockerImageName.parse("rmohr/activemq"))
+			.withExposedPorts(MQ_PORT);
 
 	@Autowired
 	private MessageSender messageSender;
@@ -27,6 +41,39 @@ class MessageVersioningStandardsApplicationTest {
 
 	@Autowired
 	private JmsTemplate jmsTemplate;
+
+
+	private Connection connection;
+	private Session session;
+	private MessageProducer producer;
+	private MessageConsumer consumer;
+
+	@BeforeEach
+	public void setup() throws JMSException {
+		String brokerUrl = "tcp://localhost:" + activeMQContainer.getMappedPort(MQ_PORT);
+		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
+		connection = connectionFactory.createConnection();
+		connection.start();
+
+		// Creating session for sending messages
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+		// Getting the queue
+		Queue queue = session.createQueue("testQueue");
+
+		// Creating the producer & consumer
+		producer = session.createProducer(queue);
+		consumer = session.createConsumer(queue);
+	}
+
+	@AfterEach
+	public void tearDown() throws JMSException {
+		// Cleaning up resources
+		if (producer != null) producer.close();
+		if (consumer != null) consumer.close();
+		if (session != null) session.close();
+		if (connection != null) connection.close();
+	}
 
 	@Order(1)
 	@DisplayName("should load spring boot application context")
