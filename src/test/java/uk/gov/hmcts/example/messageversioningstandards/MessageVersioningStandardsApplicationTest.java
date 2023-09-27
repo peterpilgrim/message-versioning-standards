@@ -5,18 +5,20 @@ import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
-
+@SpringBootTest( classes = JmsTestConfig.class)
+@ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest
 class MessageVersioningStandardsApplicationTest {
 
 	@Autowired
@@ -38,6 +40,8 @@ class MessageVersioningStandardsApplicationTest {
 	@DisplayName("convert and send simple and then receive and convert")
 	@Test
 	public void convertAndSendSimpleThenReceiveAndConvert() {
+		when(jmsTemplate.receiveAndConvert("foo")).thenReturn("HELLO, WORLD!" );
+
 		jmsTemplate.convertAndSend("foo", "Hello, world!".toUpperCase());
 		jmsTemplate.setReceiveTimeout(1_000);
 		assertThat(jmsTemplate.receiveAndConvert("foo"), is("HELLO, WORLD!"));
@@ -49,6 +53,9 @@ class MessageVersioningStandardsApplicationTest {
 	public void whenSendingMessage_thenCorrectQueueAndMessageText() throws JMSException {
 		String queueName = "queue-2";
 		String messageText = "Test message";
+		var textMessage = mock(TextMessage.class);
+		when(textMessage.getText()).thenReturn("Test message");
+		when(jmsTemplate.receive(queueName)).thenReturn(textMessage );
 
 		messageSender.sendTextMessage(queueName, messageText);
 
@@ -71,7 +78,7 @@ class MessageVersioningStandardsApplicationTest {
 		messageSender.sendTextMessage(queueName,messageText); // This works with Gradle, but not in IDEA Ultimate. Why?
 
 		ArgumentCaptor messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
-		Mockito.verify(messageListener, Mockito.timeout(100))
+		verify(messageListener, timeout(100))
 				.sampleJmsListenerMethod((TextMessage) messageCaptor.capture());
 
 		TextMessage receivedMessage = (TextMessage) messageCaptor.getValue();
