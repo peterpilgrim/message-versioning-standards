@@ -38,3 +38,4 @@ out/
 ### ActiveMQ embedded broker files
 /activemq/
 /activemq-data/
+/data/

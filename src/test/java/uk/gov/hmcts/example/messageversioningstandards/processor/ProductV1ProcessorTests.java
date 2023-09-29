@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
-@Import(ArtemisConfiguration.class)
+// @Import(ArtemisConfiguration.class)
 public class ProductV1ProcessorTests {
 
     private static final long SLEEP_TIME=100;
