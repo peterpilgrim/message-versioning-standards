@@ -25,22 +25,22 @@ public class JmsTestConfiguration {
     @Primary
     @Bean
     public JmsListenerContainerFactory<?> makeJmsListenerContainerFactory() {
-        var connectionFactory = mock( JmsListenerContainerFactory.class, MockReset.withSettings(MockReset.AFTER));
-        return connectionFactory;
+        var mockJmsListenerconnectionFactory = mock( JmsListenerContainerFactory.class, MockReset.withSettings(MockReset.AFTER));
+        return mockJmsListenerconnectionFactory;
     }
 
     @Primary
     @Bean
     public ConnectionFactory makeConnectionFactory() {
-       var connectionFactory = mock(ActiveMQConnectionFactory.class, MockReset.withSettings(MockReset.AFTER));
-       return connectionFactory;
+       var mockConnectionFactory = mock(ActiveMQConnectionFactory.class, MockReset.withSettings(MockReset.AFTER));
+       return mockConnectionFactory;
     }
 
     @Primary
     @Bean
     public JmsTemplate makeJmsTemplate() {
-        var jmsTemplate = mock(JmsTemplate.class, MockReset.withSettings(MockReset.AFTER));
-        return jmsTemplate;
+        var mockJmsTemplate = mock(JmsTemplate.class, MockReset.withSettings(MockReset.AFTER));
+        return mockJmsTemplate;
     }
 
 

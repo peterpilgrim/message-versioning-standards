@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import uk.gov.hmcts.example.messageversioningstandards.JmsTestConfig;
 import uk.gov.hmcts.example.messageversioningstandards.JmsTestConfiguration;
@@ -17,6 +18,8 @@ import static org.hamcrest.Matchers.is;
 @Import(JmsTestConfiguration.class)
 public class ProductV1ProcessorTests {
 
+    @Autowired
+    private JmsTemplate jmsTemplate;
     private static final long SLEEP_TIME=100;
     @Autowired
     private MessageSender messageSender;
