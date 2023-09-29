@@ -11,12 +11,14 @@ version = "0.0.1-SNAPSHOT"
 
 
 object Versions {
-	val jacksonMappingVersion = "2.15.2";
-	val jaywayJsonPathVersion = "2.8.0";
-	val junitPlatformLauncherVersion = "1.10.0";
-	val junitVersion       = "5.10.0";
-	val hamcrestVersion    = "2.2";
-	val mockitoVersion     = "5.4.0";
+	val lombokVersion    = "1.18.30"
+	val artemisJMSServer = "2.31.0"
+	val jacksonMappingVersion = "2.15.2"
+	val jaywayJsonPathVersion = "2.8.0"
+	val junitPlatformLauncherVersion = "1.10.0"
+	val junitVersion       = "5.10.0"
+	val hamcrestVersion    = "2.2"
+	val mockitoVersion     = "5.4.0"
 }
 
 // HINT: Force override of Spring Dependency management - Avoid NoSuchMethodError conflicts
@@ -40,6 +42,12 @@ repositories {
 }
 
 dependencies {
+	testImplementation("org.projectlombok:lombok:1.18.26")
+	// https://mvnrepository.com/artifact/org.projectlombok/lombok
+	compileOnly("org.projectlombok:lombok:${Versions.lombokVersion}")
+	
+	annotationProcessor("org.projectlombok:lombok:${Versions.lombokVersion}")
+
 	implementation("org.springframework.boot:spring-boot-starter-activemq")
 	implementation("org.springframework.boot:spring-boot-starter-artemis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -62,6 +70,10 @@ dependencies {
 
 // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
 	testImplementation("org.junit.platform:junit-platform-launcher:${Versions.junitPlatformLauncherVersion}")
+
+// https://mvnrepository.com/artifact/org.apache.activemq/artemis-jms-server
+	testImplementation("org.apache.activemq:artemis-jms-server:${Versions.artemisJMSServer}")
+
 }
 
 tasks.withType<Test> {
