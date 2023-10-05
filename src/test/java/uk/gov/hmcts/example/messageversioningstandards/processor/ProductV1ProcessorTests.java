@@ -7,15 +7,18 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.example.messageversioningstandards.ArtemisConfiguration;
 import uk.gov.hmcts.example.messageversioningstandards.MessageSender;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 // @Import(ArtemisConfiguration.class)
 public class ProductV1ProcessorTests {
