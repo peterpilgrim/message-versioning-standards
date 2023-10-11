@@ -74,6 +74,10 @@ dependencies {
 // https://mvnrepository.com/artifact/org.apache.activemq/artemis-jms-server
 	testImplementation("org.apache.activemq:artemis-jms-server:${Versions.artemisJMSServer}")
 
+	// https://mvnrepository.com/artifact/org.apache.activemq/artemis-junit-5
+	testImplementation("org.apache.activemq:artemis-junit-5:2.31.0")
+
+
 }
 
 tasks.withType<Test> {
