@@ -1,7 +1,8 @@
 package uk.gov.hmcts.example.messageversioningstandards;
 
 import jakarta.jms.ConnectionFactory;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
@@ -13,6 +14,9 @@ import org.springframework.jms.core.JmsTemplate;
 @EnableJms
 public class JmsConfig {
 
+    @Value("${spring.activemq.broker-url}")
+    String activeMQBrokerUrl;
+
     @Bean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
@@ -22,7 +26,7 @@ public class JmsConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+        return new ActiveMQConnectionFactory(activeMQBrokerUrl);
     }
 
     @Bean
