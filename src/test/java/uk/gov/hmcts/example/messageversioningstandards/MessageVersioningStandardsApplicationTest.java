@@ -3,7 +3,10 @@ package uk.gov.hmcts.example.messageversioningstandards;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
+import org.apache.activemq.artemis.api.core.SimpleString;
+import org.apache.activemq.artemis.junit.EmbeddedActiveMQExtension;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,24 @@ class MessageVersioningStandardsApplicationTest {
 
 	@Autowired
 	private JmsTemplate jmsTemplate;
+
+	@RegisterExtension
+	private static EmbeddedActiveMQExtension server = new EmbeddedActiveMQExtension("embedded-artemis-jms.xml");
+
+	static final SimpleString TEST_QUEUE = new SimpleString("test.queue");
+	static final SimpleString TEST_ADDRESS = new SimpleString("test.queueName");
+
+	@BeforeAll
+	public static void startEmbedded() throws Exception
+	{
+		server.createQueue(TEST_ADDRESS, TEST_QUEUE);
+	}
+
+	@AfterAll
+	public static void stopEmbedded() throws Exception{
+		server.stop();
+	}
+
 
 	@Order(1)
 	@DisplayName("should load spring boot application context")
@@ -59,7 +80,6 @@ class MessageVersioningStandardsApplicationTest {
 
 
 	@Order(4)
-	@Disabled
 	@DisplayName("when Listening from JMS queue then Receiving CorrectMessage")
 	@Test
 	public void whenListening_thenReceivingCorrectMessage() throws JMSException, InterruptedException {

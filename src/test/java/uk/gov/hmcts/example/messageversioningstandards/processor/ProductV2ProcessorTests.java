@@ -3,10 +3,11 @@ package uk.gov.hmcts.example.messageversioningstandards.processor;
 import jakarta.jms.JMSException;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.api.core.SimpleString;
+import org.apache.activemq.artemis.junit.EmbeddedActiveMQExtension;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import uk.gov.hmcts.example.messageversioningstandards.MessageSender;
@@ -24,31 +25,23 @@ public class ProductV2ProcessorTests {
     @Autowired
     private ProductProcessor productProcessor;
 
-    @BeforeEach
-    public void cleanup() {
-        clearQueue("tcp://localhost:61616",  "queue-1");
-        clearQueue("tcp://localhost:61616",  "processor-queue-1");
-    }
+    @RegisterExtension
+    private static EmbeddedActiveMQExtension server = new EmbeddedActiveMQExtension("embedded-artemis-jms.xml");
 
-    public void clearQueue( String connection, String queueName)
+    static final SimpleString TEST_QUEUE = new SimpleString("test.queue");
+    static final SimpleString TEST_ADDRESS = new SimpleString("test.queueName");
+
+    @BeforeAll
+    public static void startEmbedded() throws Exception
     {
-        ActiveMQConnection conn = null;
-
-        try {
-            conn = (ActiveMQConnection) new    ActiveMQConnectionFactory(connection).createConnection();
-            conn.destroyDestination(new ActiveMQQueue(queueName));
-        } catch (JMSException e) {
-            System.err.println("**Error** connecting to the browser please check the URL" + e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (JMSException e) {
-                    System.err.println("**Error** closing connection" + e);
-                }
-            }
-        }
+        server.createQueue(TEST_ADDRESS, TEST_QUEUE);
     }
+
+    @AfterAll
+    public static void stopEmbedded() throws Exception{
+        server.stop();
+    }
+
 
     @DisplayName("process product V2 message to Line Item")
     @Test
