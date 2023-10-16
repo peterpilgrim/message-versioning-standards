@@ -1,12 +1,11 @@
 package uk.gov.hmcts.example.messageversioningstandards.processor;
 
-import jakarta.jms.JMSException;
-import org.apache.activemq.ActiveMQConnection;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.junit.EmbeddedActiveMQExtension;
-import org.apache.activemq.command.ActiveMQQueue;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,8 +27,8 @@ public class ProductV2ProcessorTests {
     @RegisterExtension
     private static EmbeddedActiveMQExtension server = new EmbeddedActiveMQExtension("embedded-artemis-jms.xml");
 
-    static final SimpleString TEST_QUEUE = new SimpleString("test.queue");
-    static final SimpleString TEST_ADDRESS = new SimpleString("test.queueName");
+    private static final SimpleString TEST_QUEUE = new SimpleString("test.queue");
+    private static final SimpleString TEST_ADDRESS = new SimpleString("test.queueName");
 
     @BeforeAll
     public static void startEmbedded() throws Exception
