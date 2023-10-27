@@ -11,14 +11,14 @@ version = "0.0.1-SNAPSHOT"
 
 
 object Versions {
-	val lombokVersion    = "1.18.30"
-	val artemisJMSServer = "2.31.0"
-	val jacksonMappingVersion = "2.15.2"
-	val jaywayJsonPathVersion = "2.8.0"
-	val junitPlatformLauncherVersion = "1.10.0"
-	val junitVersion       = "5.10.0"
-	val hamcrestVersion    = "2.2"
-	val mockitoVersion     = "5.4.0"
+	val lombokVersion   			= "1.18.30"
+	val artemisJMSServerVersion 	= "2.31.0"
+	val jacksonMappingVersion 		= "2.15.2"
+	val jaywayJsonPathVersion 		= "2.8.0"
+	val junitPlatformLauncherVersion= "1.10.0"
+	val junitVersion       			= "5.10.0"
+	val hamcrestVersion    			= "2.2"
+	val mockitoVersion     			= "5.4.0"
 }
 
 // HINT: Force override of Spring Dependency management - Avoid NoSuchMethodError conflicts
@@ -42,8 +42,9 @@ repositories {
 }
 
 dependencies {
-	testImplementation("org.projectlombok:lombok:1.18.26")
+	testImplementation("org.projectlombok:lombok:${Versions.lombokVersion}")
 	// https://mvnrepository.com/artifact/org.projectlombok/lombok
+	// https://projectlombok.org/setup/gradle
 	compileOnly("org.projectlombok:lombok:${Versions.lombokVersion}")
 	
 	annotationProcessor("org.projectlombok:lombok:${Versions.lombokVersion}")
@@ -56,9 +57,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-core:${Versions.jacksonMappingVersion}")
 	implementation("com.jayway.jsonpath:json-path:${Versions.jaywayJsonPathVersion}")
 
-	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	testImplementation("org.hamcrest:hamcrest:${Versions.hamcrestVersion}")
@@ -68,15 +67,14 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:${Versions.mockitoVersion}")
 	testImplementation("org.mockito:mockito-junit-jupiter:${Versions.mockitoVersion}")
 
-// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
+	// https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
 	testImplementation("org.junit.platform:junit-platform-launcher:${Versions.junitPlatformLauncherVersion}")
 
-// https://mvnrepository.com/artifact/org.apache.activemq/artemis-jms-server
-	testImplementation("org.apache.activemq:artemis-jms-server:${Versions.artemisJMSServer}")
+	// https://mvnrepository.com/artifact/org.apache.activemq/artemis-jms-server
+	testImplementation("org.apache.activemq:artemis-jms-server:${Versions.artemisJMSServerVersion}")
 
 	// https://mvnrepository.com/artifact/org.apache.activemq/artemis-junit-5
-	testImplementation("org.apache.activemq:artemis-junit-5:2.31.0")
-
+	testImplementation("org.apache.activemq:artemis-junit-5:${Versions.artemisJMSServerVersion}")
 
 }
 
